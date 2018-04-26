@@ -9,6 +9,12 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'js/app.bundle.js'
   },
+  resolve: {
+    alias: {
+      page: path.resolve(__dirname, 'src/page'),
+      component: path.resolve(__dirname, 'src/component')
+    }
+  },
   module: {
     rules: [
       {
@@ -69,7 +75,8 @@ module.exports = {
   plugins: [
     // 抽离html
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './src/index.html',
+      favicon: './favicon.ico'
     }),
     // 抽离css
     new ExtractTextPlugin('css/[name].css'),
@@ -80,7 +87,10 @@ module.exports = {
     })
   ],
   devServer: {
-    port: 8999
+    port: 8999,
+    historyApiFallback: {
+        index: '/dist/index.html'
+    }
     // contentBase: './dist'
   }
 };
