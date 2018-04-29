@@ -1,7 +1,7 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const webpack = require('webpack')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
 module.exports = {
   entry: './src/app.jsx',
   output: {
@@ -12,7 +12,9 @@ module.exports = {
   resolve: {
     alias: {
       page: path.resolve(__dirname, 'src/page'),
-      component: path.resolve(__dirname, 'src/component')
+      component: path.resolve(__dirname, 'src/component'),
+      util: path.resolve(__dirname, 'src/util'),
+      service: path.resolve(__dirname, 'src/service')
     }
   },
   module: {
@@ -29,21 +31,21 @@ module.exports = {
         }
       },
       {
-         test: /\.css$/,
+        test: /\.css$/,
         //  use: [
         //    'style-loader',
         //    'css-loader'
         //  ]
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
+          fallback: 'style-loader',
+          use: 'css-loader'
         })
       },
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            use: ['css-loader', 'sass-loader']
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
         })
       },
       {
@@ -89,7 +91,17 @@ module.exports = {
   devServer: {
     port: 8999,
     historyApiFallback: {
-        index: '/dist/index.html'
+      index: '/dist/index.html'
+    },
+    proxy: {
+      '/manage': {
+        target: 'http://admintest.happymmall.com',
+        changeOrigin: true
+      },
+      '/user/logout.do': {
+        target: 'http://admintest.happymmall.com',
+        changeOrigin: true
+      }
     }
     // contentBase: './dist'
   }
